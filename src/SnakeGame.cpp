@@ -307,8 +307,7 @@ void SnakeGame::DrawFood() const
 void SnakeGame::DrawObstacles() const
 {
   std::cout << config.obstacleColor;
-  for (const auto &mine : obstacles)
-  {
+  for (const auto &mine : obstacles){
     std::cout << "\033[" << (mine.y + 1) << ";" << (mine.x + 1) << "H" << "*";
   }
   std::cout << "\033[0m";
@@ -491,25 +490,21 @@ void SnakeGame::SetRawMode(bool enable){
 }
 
 // 从终端读取一个按键，如果是方向键则返回特殊编码。
-int SnakeGame::ReadKey()
-{
+int SnakeGame::ReadKey(){
   fd_set readfds;
   FD_ZERO(&readfds);
   FD_SET(STDIN_FILENO, &readfds);
   timeval timeout{0, 0};
   int result = select(STDIN_FILENO + 1, &readfds, nullptr, nullptr, &timeout);
-  if (result <= 0)
-  {
+  if (result <= 0){
     return 0;
   }
   char buffer[3] = {0};
   ssize_t count = read(STDIN_FILENO, buffer, sizeof(buffer));
-  if (count <= 0)
-  {
+  if (count <= 0){
     return 0;
   }
-  if (buffer[0] == '\033' && count >= 3 && buffer[1] == '[')
-  {
+  if (buffer[0] == '\033' && count >= 3 && buffer[1] == '['){
     return 1000 + static_cast<int>(buffer[2]);
   }
   return static_cast<int>(buffer[0]);
